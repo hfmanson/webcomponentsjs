@@ -71,18 +71,23 @@ function register(name, options) {
   // construct a defintion out of options
   // TODO(sjmiles): probably should clone options instead of mutating it
   var definition = options || {};
+  if (!definition.namespace) {
+    definition.namespace = HTML_NAMESPACE;
+  }
   if (!name) {
     throw new Error('document.registerElement: first argument `name` must not be empty');
   }
-  if (name.indexOf('-') < 0) {
-    throw new Error('document.registerElement: first argument (\'name\') must contain a dash (\'-\'). Argument provided was \'' + String(name) + '\'.');
-  }
-  // prevent registering reserved names
-  if (isReservedTag(name)) {
-    throw new Error('Failed to execute \'registerElement\' on \'Document\': Registration failed for type \'' + String(name) + '\'. The type name is invalid.');
+  if (definition.namespace === HTML_NAMESPACE) {
+    if (name.indexOf('-') < 0) {
+      throw new Error('document.registerElement: first argument (\'name\') must contain a dash (\'-\'). Argument provided was \'' + String(name) + '\'.');
+    }
+    // prevent registering reserved names
+    if (isReservedTag(name)) {
+      throw new Error('Failed to execute \'registerElement\' on \'Document\': Registration failed for type \'' + String(name) + '\'. The type name is invalid.');
+    }
   }
   // elements may only be registered once
-  if (getRegisteredDefinition(name)) {
+  if (getRegisteredDefinition(name, definition.namespace)) {
     throw new Error('DuplicateDefinitionError: a type with name \'' + String(name) + '\' is already registered');
   }
   // prototype is optional, default to an extension of HTMLElement
@@ -244,16 +249,24 @@ function instantiate(definition) {
 
 // element registry (maps tag names to definitions)
 
-var registry = {};
+var registry = { };
 
-function getRegisteredDefinition(name) {
+function getRegisteredDefinition(name, namespace) {
   if (name) {
-    return registry[name.toLowerCase()];
+    var reg_namespace = registry[namespace];
+    // TODO HFM
+    if (!namespace) {
+      namespace = HTML_NAMESPACE;
+    }
+    return reg_namespace ? reg_namespace[name.toLowerCase()] : undefined;
   }
 }
 
 function registerDefinition(name, definition) {
-  registry[name] = definition;
+  if (!registry[definition.namespace]) {
+    registry[definition.namespace] = {};
+  }
+  registry[definition.namespace][name] = definition;
 }
 
 function generateConstructor(definition) {

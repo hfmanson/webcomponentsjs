@@ -36,7 +36,7 @@ function upgrade(node, isAttached) {
   if (!node.__upgraded__ && (node.nodeType === Node.ELEMENT_NODE)) {
     var is = node.getAttribute('is');
     // find definition first by localName and secondarily by is attribute
-    var definition = scope.getRegisteredDefinition(node.localName) ||
+    var definition = scope.getRegisteredDefinition(node.localName, node.namespaceURI) ||
       scope.getRegisteredDefinition(is);
     if (definition) {
       // upgrade with is iff the definition tag matches the element tag
