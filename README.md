@@ -1,3 +1,20 @@
+webcomponents.js updated for XHTML element registration
+======================================================
+This fork of webcomponents.js enhances Document.registerElement so that the options argument can contain a
+'namespace' property which contains an XHTML namespaceURI e.g. http://mansoft.nl/big-blue-button so you can put a
+custom element in another namespace than http://www.w3.org/1999/xhtml, which is the default when no namespace is
+specified. The custom element registry is now a 2 dimensional lookup table. First the namespaceURI is looked up and then the localname of the custom Element. An example usage can be found at 
+https://github.com/hfmanson/webcomponentsjs/blob/xml-namespace/xmltests/brb-test-polyfill-ce.xhtml
+Here two custom elements are defined with the same name 'bigbutton' (without dashes) but with different namespaces
+"http://mansoft.nl/big-red-button" and "http://mansoft.nl/big-blue-button". When webcomponents.js is build you can
+test this file on a browser not natively implementing Document.registerElement e.g. Firefox
+An important change is to no longer use the HTML-specific onclick functions etc. but the generic DOM AddEventListener pattern.
+The registration of the components using the extra 'namespace' property is done in https://github.com/hfmanson/webcomponentsjs/blob/xml-namespace/xmltests/bbb-component.js and https://github.com/hfmanson/webcomponentsjs/blob/xml-namespace/xmltests/brb-component.js
+The example component 'Big Red Button' is based on a webcomponent sample from Robin Berjon's presentation 'Distributed Extensibility: Finally Done Right?' on XML Prague 2014.
+
+When this will be implemented in the official Custom Element specification it will be possible to polyfill XHTML with for example XForms by implementing each XForm component using custom components. Or MathML.
+
+
 webcomponents.js
 ================
 
