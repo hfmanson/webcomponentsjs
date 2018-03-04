@@ -12,29 +12,24 @@
 <meta charset="utf-8">
 
 <!-- WebComponents -->
-<script src="../webcomponents.js" shadow></script>
-
-<!-- Mocha/Chai -->
-<link rel="stylesheet" href="tools/mocha/mocha.css">
-<script src="tools/mocha/mocha.js"></script>
-<script src="tools/chai/chai.js"></script>
-<script src="tools/mocha-htmltest.js"></script>
-
-<div id="mocha"></div>
-<script>
-  mocha.setup({ui: 'tdd', slow: 1000});
-</script>
-
-<script src="CustomElements/tests.js"></script>
-<script src="HTMLImports/tests.js"></script>
-<script src="ShadowDOM/tests.js"></script>
-<script src="ShadowCSS/tests.js"></script>
-<script src="Template/tests.js"></script>
-<script src="WebComponents/tests.js"></script>
-
+<script src="../../web-component-tester/browser.js"></script>
 
 <script>
-  document.addEventListener('WebComponentsReady', function() {
-    mocha.run();
-  });
+  WCT.loadSuites([
+    'template-and-CE.html',
+    // 'template-and-imports.html',
+    'integration.html',
+    'integration-es5.html',
+    'load.html',
+    'force-polyfills.html',
+    'dev-loader.html',
+    'dev-loader-swizzled.html',
+    // 'smoke.html',
+    // 'ce-import.html',
+    // 'ce-upgradedocumenttree.html',  // Does not exist in the v1 polyfill
+    'ce-upgrade-order.html',
+    // 'ce-import-upgrade.html',  // Order of upgrade/import is different in v1
+    // 'ce-import-upgrade-async.html',
+    'promise.html'
+  ]);
 </script>
